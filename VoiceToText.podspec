@@ -3,7 +3,7 @@ require "json"
 package = JSON.parse(File.read(File.join(__dir__, "package.json")))
 
 Pod::Spec.new do |s|
-  s.name         = "TextToVoice"
+  s.name         = "VoiceToText"
   s.version      = package["version"]
   s.summary      = package["description"]
   s.homepage     = package["homepage"]
@@ -11,10 +11,11 @@ Pod::Spec.new do |s|
   s.authors      = package["author"]
 
   s.platforms    = { :ios => min_ios_version_supported }
-  s.source       = { :git => "https://github.com/nameisjayant/react-native-text-to-voice.git", :tag => "#{s.version}" }
+  s.source       = { :git => "https://github.com/nameisjayant/react-native-voice-to-text.git", :tag => "#{s.version}" }
 
   s.source_files = "ios/**/*.{h,m,mm,swift,cpp}"
   s.private_header_files = "ios/**/*.h"
+  s.frameworks   = "Speech", "AVFoundation"
 
   install_modules_dependencies(s)
 end

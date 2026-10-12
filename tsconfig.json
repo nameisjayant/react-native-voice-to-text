@@ -2,12 +2,12 @@
   "compilerOptions": {
     "rootDir": ".",
     "paths": {
-      "react-native-text-to-voice": ["./src/index"]
+      "react-native-voice-to-text": ["./src/index"]
     },
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,
     "customConditions": [
-      "react-native-text-to-voice-source",
+      "react-native-voice-to-text-source",
       "react-native-strict-api"
     ],
     "esModuleInterop": true,

@@ -1,4 +1,4 @@
-package texttovoice.example
+package voicetotext.example
 
 import android.app.Application
 import com.facebook.react.PackageList

@@ -13,7 +13,7 @@ const root = path.resolve(__dirname, '..');
 const config = withMetroConfig(getDefaultConfig(__dirname), {
   root,
   dirname: __dirname,
-  conditions: ['react-native-text-to-voice-source'],
+  conditions: ['react-native-voice-to-text-source'],
 });
 
 module.exports = config;
