@@ -12,9 +12,9 @@ Uses the platform recognizers (Android `SpeechRecognizer`, iOS `SFSpeechRecogniz
 ## Installation
 
 ```sh
-npm install react-native-voice-to-text
+npm install @nameisjayant/react-native-voice-to-text
 # or
-yarn add react-native-voice-to-text
+yarn add @nameisjayant/react-native-voice-to-text
 
 cd ios && pod install
 ```
@@ -39,7 +39,7 @@ Nothing to do. The library's manifest adds `RECORD_AUDIO` and the `RecognitionSe
 ## Quick start: drop-in search bar
 
 ```tsx
-import { VoiceSearchBar } from 'react-native-voice-to-text';
+import { VoiceSearchBar } from '@nameisjayant/react-native-voice-to-text';
 
 const [query, setQuery] = useState('');
 
@@ -54,7 +54,7 @@ const [query, setQuery] = useState('');
 ## Keep your own search bar, use only the dialog
 
 ```tsx
-import { MicButton, VoiceSearchDialog } from 'react-native-voice-to-text';
+import { MicButton, VoiceSearchDialog } from '@nameisjayant/react-native-voice-to-text';
 
 const [open, setOpen] = useState(false);
 
@@ -165,7 +165,7 @@ Tapping the mic while listening finishes immediately; tapping it after an error 
 Build any UI you like. The hook handles permissions, silence detection, and cleanup.
 
 ```tsx
-import { useSpeechToText } from 'react-native-voice-to-text';
+import { useSpeechToText } from '@nameisjayant/react-native-voice-to-text';
 
 const { status, transcript, volume, error, start, stop, cancel } = useSpeechToText({
   locale: 'en-US',
@@ -179,7 +179,7 @@ const { status, transcript, volume, error, start, stop, cancel } = useSpeechToTe
 ## Low level: `SpeechToText`
 
 ```ts
-import { SpeechToText } from 'react-native-voice-to-text';
+import { SpeechToText } from '@nameisjayant/react-native-voice-to-text';
 
 await SpeechToText.isAvailable();
 await SpeechToText.requestPermissions();

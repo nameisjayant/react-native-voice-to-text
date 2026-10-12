@@ -13,7 +13,7 @@ import {
   VoiceSearchBar,
   VoiceSearchDialog,
   lightVoiceSearchTheme,
-} from 'react-native-voice-to-text';
+} from '@nameisjayant/react-native-voice-to-text';
 
 const ITEMS = [
   'Find restaurants near me',

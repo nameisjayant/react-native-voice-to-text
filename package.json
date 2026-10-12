@@ -1,5 +1,5 @@
 {
-  "name": "react-native-voice-to-text",
+  "name": "@nameisjayant/react-native-voice-to-text",
   "version": "0.1.0",
   "description": "Customizable speech-to-text for React Native with a voice search dialog and silence auto-stop",
   "main": "./lib/module/index.js",
