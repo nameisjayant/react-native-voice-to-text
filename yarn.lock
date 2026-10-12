@@ -8554,6 +8554,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-native-safe-area-context@npm:^5.10.1":
+  version: 5.10.1
+  resolution: "react-native-safe-area-context@npm:5.10.1"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: 10c0/8aebfa832d483e385f9848b5ea92ce3e525a44cad5b3b363b5b190c1f559f3f01176f745ff7a2ad0e2191cb3fb2d0be26c8650956640f086562440c869713ec5
+  languageName: node
+  linkType: hard
+
 "react-native-voice-to-text-example@workspace:example":
   version: 0.0.0-use.local
   resolution: "react-native-voice-to-text-example@workspace:example"
@@ -8573,6 +8583,7 @@ __metadata:
     react-native: "npm:0.86.2"
     react-native-builder-bob: "npm:^0.43.2"
     react-native-monorepo-config: "npm:^0.4.0"
+    react-native-safe-area-context: "npm:^5.10.1"
   languageName: unknown
   linkType: soft
 

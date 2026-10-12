@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import {
   FlatList,
-  SafeAreaView,
   StyleSheet,
   Switch,
   Text,
   TextInput,
   View,
 } from 'react-native';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import {
   MicButton,
   VoiceSearchBar,
@@ -27,6 +27,14 @@ const ITEMS = [
 ];
 
 export default function App() {
+  return (
+    <SafeAreaProvider>
+      <Demo />
+    </SafeAreaProvider>
+  );
+}
+
+function Demo() {
   const [query, setQuery] = useState('');
   const [submitted, setSubmitted] = useState('');
   const [light, setLight] = useState(false);
