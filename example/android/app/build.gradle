@@ -26,6 +26,8 @@ react {
     /* Bundling */
     //   A list containing the node command and its flags. Default is just 'node'.
     // nodeExecutableAndArgs = ["node"]
+    //   Resolved in settings.gradle so builds work when the IDE lacks the shell PATH.
+    nodeExecutableAndArgs = [gradle.ext.nodeBinary]
     //
     //   The command to run when bundling. By default is 'bundle'
     // bundleCommand = "ram-bundle"

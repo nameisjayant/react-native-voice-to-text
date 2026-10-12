@@ -75,6 +75,14 @@ To fix formatting errors, run the following:
 yarn lint --fix
 ```
 
+Run the unit tests (Jest + React Native Testing Library). Use the Node version from `.nvmrc`:
+
+```sh
+yarn test
+```
+
+Tests live in `__tests__` folders next to the code. The native module is replaced by `src/__mocks__/NativeVoiceToText.ts`; call `jest.mock('../NativeVoiceToText')` and use its `emitResult` / `emitError` / `emitVolume` / `emitState` helpers to simulate the recognizer.
+
 
 
 ### Scripts

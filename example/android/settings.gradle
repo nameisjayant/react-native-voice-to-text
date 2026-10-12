@@ -1,6 +1,32 @@
 pluginManagement { includeBuild("../node_modules/@react-native/gradle-plugin") }
 plugins { id("com.facebook.react.settings") }
-extensions.configure(com.facebook.react.ReactSettingsExtension){ ex -> ex.autolinkLibrariesFromCommand() }
+
+// Android Studio launched from the Dock/Spotlight doesn't inherit the shell PATH,
+// so nvm/Homebrew installs of node aren't found. Resolve node explicitly.
+def resolveNodeBinary = {
+  def fromEnv = System.getenv("NODE_BINARY")
+  if (fromEnv) return fromEnv
+  def onPath = System.getenv("PATH")?.split(File.pathSeparator)?.find { new File(it, "node").canExecute() }
+  if (onPath) return new File(onPath, "node").absolutePath
+  def nvmNode = new File(System.getProperty("user.home"), ".nvm/versions/node").listFiles()
+    ?.findAll { new File(it, "bin/node").canExecute() }
+    ?.max { a, b ->
+      def va = a.name.replace("v", "").tokenize(".")*.toInteger()
+      def vb = b.name.replace("v", "").tokenize(".")*.toInteger()
+      [va, vb].transpose().findResult { x, y -> x != y ? x <=> y : null } ?: 0
+    }
+  if (nvmNode) return new File(nvmNode, "bin/node").absolutePath
+  return ["/opt/homebrew/bin/node", "/usr/local/bin/node"].find { new File(it).canExecute() } ?: "node"
+}
+gradle.ext.nodeBinary = resolveNodeBinary()
+
+extensions.configure(com.facebook.react.ReactSettingsExtension){ ex ->
+  ex.autolinkLibrariesFromCommand([
+    gradle.ext.nodeBinary,
+    file("../node_modules/@react-native-community/cli/build/bin.js").absolutePath,
+    "config",
+  ])
+}
 rootProject.name = 'voicetotext.example'
 include ':app'
 includeBuild('../node_modules/@react-native/gradle-plugin')
