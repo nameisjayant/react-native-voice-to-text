@@ -9,6 +9,15 @@ Speech-to-text for React Native, with a ready-made **voice search** flow:
 
 Uses the platform recognizers (Android `SpeechRecognizer`, iOS `SFSpeechRecognizer`), so there are no API keys or extra dependencies. It's a TurboModule for the New Architecture. Every part of the UI can be themed, restyled, or replaced.
 
+<p align="center">
+  <img src="docs/assets/demo-phone.svg" width="300" alt="Demo: tap the mic, the listening dialog shows the words live, closes after 2 seconds of silence, and the text fills the search bar">
+</p>
+
+<p align="center">
+  <b><a href="https://nameisjayant.github.io/react-native-voice-to-text/">Docs and interactive demo →</a></b><br>
+  <sub>Try the light theme and the bottom-sheet position on the site.</sub>
+</p>
+
 ## Installation
 
 ```sh

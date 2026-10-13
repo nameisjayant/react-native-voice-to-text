@@ -1,0 +1,173 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 690" width="320" height="690" role="img" aria-label="Animated demo: tap the mic, the listening dialog shows the words live, closes after 2 seconds of silence, and the text fills the search bar">
+<!-- Same 12 s loop as the hero demo in docs/index.html.
+     Timeline: 0.9 s tap mic · 1.2 s dialog opens (Getting ready…) · 1.7 s Listening… · 2.7–4.6 s words arrive ·
+     4.6–6.6 s silence timer · 6.6 s Got it · 7.2 s dialog closes, search filled · 7.6 s results. -->
+<defs>
+  <clipPath id="screen"><rect x="20" y="20" width="280" height="597" rx="35"/></clipPath>
+  <symbol id="mic" viewBox="0 0 24 24"><path fill="currentColor" d="M12 14a3 3 0 0 0 3-3V5a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.92V21h2v-3.08A7 7 0 0 0 19 11h-2z"/></symbol>
+  <symbol id="search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M15.5 15.5 21 21" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></symbol>
+</defs>
+<style>
+  text { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+  .anim { animation-duration: 12s; animation-iteration-count: infinite; animation-timing-function: linear; }
+  .scale { transform-box: fill-box; transform-origin: center; }
+
+  @keyframes ripple { 0%, 7.4% { opacity: 0; transform: scale(.4); } 7.5% { opacity: 1; transform: scale(.4); } 11.7%, 100% { opacity: 0; transform: scale(1.6); } }
+  @keyframes overlay { 0%, 10% { opacity: 0; } 12.5%, 60.2% { opacity: 1; } 62.7%, 100% { opacity: 0; } }
+  @keyframes dialog { 0%, 10% { transform: scale(.94); } 12.5%, 100% { transform: scale(1); } }
+  @keyframes ready { 0%, 9.9% { opacity: 0; } 10%, 14.1% { opacity: 1; } 14.2%, 100% { opacity: 0; } }
+  @keyframes listening { 0%, 14.1% { opacity: 0; } 14.2%, 55.1% { opacity: 1; } 55.2%, 100% { opacity: 0; } }
+  @keyframes gotit { 0%, 55.1% { opacity: 0; } 55.2%, 63% { opacity: 1; } 63.1%, 100% { opacity: 0; } }
+  @keyframes w1 { 0%, 22.4% { opacity: 0; } 22.5%, 26.4% { opacity: 1; } 26.5%, 100% { opacity: 0; } }
+  @keyframes w2 { 0%, 26.4% { opacity: 0; } 26.5%, 30.4% { opacity: 1; } 30.5%, 100% { opacity: 0; } }
+  @keyframes w3 { 0%, 30.4% { opacity: 0; } 30.5%, 34.4% { opacity: 1; } 34.5%, 100% { opacity: 0; } }
+  @keyframes w4 { 0%, 34.4% { opacity: 0; } 34.5%, 63% { opacity: 1; } 63.1%, 100% { opacity: 0; } }
+  @keyframes micred { 0%, 55.2% { opacity: 1; } 57.7%, 99% { opacity: 0; } 100% { opacity: 1; } }
+  @keyframes pulse {
+    0%, 22.5% { transform: scale(1.03); }
+    23.5% { transform: scale(1.42); } 24.6% { transform: scale(1.25); } 25.8% { transform: scale(1.5); }
+    27% { transform: scale(1.3); } 28.2% { transform: scale(1.48); } 29.4% { transform: scale(1.22); }
+    30.6% { transform: scale(1.45); } 31.8% { transform: scale(1.33); } 33% { transform: scale(1.52); }
+    34.2% { transform: scale(1.27); } 35.4% { transform: scale(1.44); } 36.8% { transform: scale(1.3); }
+    38.5% { transform: scale(1.12); } 40%, 100% { transform: scale(1.03); }
+  }
+  @keyframes placeholder { 0%, 60.1% { opacity: 1; } 60.2%, 100% { opacity: 0; } }
+  @keyframes query { 0%, 60.1% { opacity: 0; } 60.2%, 99.9% { opacity: 1; } 100% { opacity: 0; } }
+  @keyframes skeleton { 0%, 63.5% { opacity: .45; } 66.4%, 99% { opacity: 0; } 100% { opacity: .45; } }
+  @keyframes found { 0%, 63.5% { opacity: 0; } 66.4%, 99% { opacity: 1; } 100% { opacity: 0; } }
+  @keyframes s-idle { 0%, 9.9% { opacity: 1; } 10%, 60.1% { opacity: 0; } 60.2%, 100% { opacity: 1; } }
+  @keyframes silence { 0%, 38.5% { transform: scaleX(0); } 55.2% { transform: scaleX(1); } 60.1% { transform: scaleX(1); } 60.2%, 100% { transform: scaleX(0); } }
+
+  .ripple { animation-name: ripple; }
+  .overlay { animation-name: overlay; }
+  .dialog { animation-name: dialog; animation-timing-function: ease-out; }
+  .ready { animation-name: ready; }
+  .listening { animation-name: listening; }
+  .gotit { animation-name: gotit; }
+  .w1 { animation-name: w1; } .w2 { animation-name: w2; } .w3 { animation-name: w3; } .w4 { animation-name: w4; }
+  .micred { animation-name: micred; }
+  .pulse { animation-name: pulse; animation-timing-function: ease-in-out; }
+  .placeholder { animation-name: placeholder; }
+  .query { animation-name: query; }
+  .skeleton { animation-name: skeleton; }
+  .found { animation-name: found; }
+  .s-idle { animation-name: s-idle; }
+  .s-starting { animation-name: ready; }
+  .s-listening { animation-name: listening; }
+  @keyframes s-processing { 0%, 55.1% { opacity: 0; } 55.2%, 60.1% { opacity: 1; } 60.2%, 100% { opacity: 0; } }
+  .s-processing { animation-name: s-processing; }
+  .silence { animation-name: silence; transform-box: fill-box; transform-origin: left center; }
+
+  .meter { fill: #8B929E; font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: 12px; }
+  .meter .v { fill: #D8402F; font-weight: 600; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .anim { animation: none !important; }
+  }
+</style>
+
+<!-- Phone frame -->
+<rect x="10" y="10" width="300" height="617" rx="44" fill="#0B0C10"/>
+<rect x="10.75" y="10.75" width="298.5" height="615.5" rx="43.25" fill="none" stroke="#2A2D35" stroke-width="1.5"/>
+
+<g clip-path="url(#screen)">
+  <rect x="20" y="20" width="280" height="597" fill="#F7F7F8"/>
+
+  <!-- App header with search bar -->
+  <rect x="20" y="20" width="280" height="136" fill="#FFFFFF"/>
+  <rect x="20" y="156" width="280" height="1" fill="#ECECEE"/>
+  <text x="36" y="86" font-size="18" font-weight="700" fill="#202124">Restaurants</text>
+  <rect x="36" y="100" width="248" height="40" rx="20" fill="#F1F3F4"/>
+  <use href="#search" x="48" y="112" width="16" height="16" color="#80868B"/>
+  <text class="anim placeholder" x="72" y="125" font-size="13.5" fill="#80868B">Search restaurants</text>
+  <text class="anim query" x="72" y="125" font-size="13.5" fill="#202124" opacity="0">spicy ramen near me</text>
+  <circle class="anim ripple scale" cx="264" cy="120" r="15" fill="#5F6368" fill-opacity=".25" opacity="0"/>
+  <use href="#mic" x="255" y="111" width="18" height="18" color="#5F6368"/>
+
+  <!-- Results: skeleton, then the found restaurants -->
+  <g class="anim skeleton" opacity=".45">
+    <g>
+      <rect x="36" y="172" width="248" height="56" rx="12" fill="#FFFFFF" stroke="#ECECEE"/>
+      <rect x="48" y="183" width="34" height="34" rx="9" fill="#E8EAED"/>
+      <rect x="94" y="189" width="110" height="10" rx="4" fill="#E8EAED"/>
+      <rect x="94" y="204" width="80" height="8" rx="4" fill="#E8EAED"/>
+    </g>
+    <g transform="translate(0 66)">
+      <rect x="36" y="172" width="248" height="56" rx="12" fill="#FFFFFF" stroke="#ECECEE"/>
+      <rect x="48" y="183" width="34" height="34" rx="9" fill="#E8EAED"/>
+      <rect x="94" y="189" width="110" height="10" rx="4" fill="#E8EAED"/>
+      <rect x="94" y="204" width="80" height="8" rx="4" fill="#E8EAED"/>
+    </g>
+    <g transform="translate(0 132)">
+      <rect x="36" y="172" width="248" height="56" rx="12" fill="#FFFFFF" stroke="#ECECEE"/>
+      <rect x="48" y="183" width="34" height="34" rx="9" fill="#E8EAED"/>
+      <rect x="94" y="189" width="110" height="10" rx="4" fill="#E8EAED"/>
+      <rect x="94" y="204" width="80" height="8" rx="4" fill="#E8EAED"/>
+    </g>
+  </g>
+  <g class="anim found" opacity="0">
+    <g>
+      <rect x="36" y="172" width="248" height="56" rx="12" fill="#FFFFFF" stroke="#ECECEE"/>
+      <rect x="48" y="183" width="34" height="34" rx="9" fill="#F6D6CF"/>
+      <text x="94" y="197" font-size="13" font-weight="600" fill="#202124">Ramen Taro</text>
+      <text x="94" y="213" font-size="11" fill="#80868B">Japanese · 0.4 km · 4.7★</text>
+    </g>
+    <g transform="translate(0 66)">
+      <rect x="36" y="172" width="248" height="56" rx="12" fill="#FFFFFF" stroke="#ECECEE"/>
+      <rect x="48" y="183" width="34" height="34" rx="9" fill="#F8E2C4"/>
+      <text x="94" y="197" font-size="13" font-weight="600" fill="#202124">Chili Noodle Bar</text>
+      <text x="94" y="213" font-size="11" fill="#80868B">Sichuan · 0.9 km · 4.5★</text>
+    </g>
+    <g transform="translate(0 132)">
+      <rect x="36" y="172" width="248" height="56" rx="12" fill="#FFFFFF" stroke="#ECECEE"/>
+      <rect x="48" y="183" width="34" height="34" rx="9" fill="#DCE6F5"/>
+      <text x="94" y="197" font-size="13" font-weight="600" fill="#202124">Ippudo Express</text>
+      <text x="94" y="213" font-size="11" fill="#80868B">Ramen · 1.2 km · 4.6★</text>
+    </g>
+  </g>
+
+  <!-- Listening dialog -->
+  <g class="anim overlay" opacity="0">
+    <rect x="20" y="20" width="280" height="597" fill="#000000" fill-opacity=".55"/>
+    <g class="anim dialog scale">
+      <rect x="38" y="168" width="244" height="300" rx="20" fill="#1F1F1F"/>
+      <g text-anchor="middle">
+        <text class="anim ready" x="160" y="210" font-size="17" font-weight="600" fill="#FFFFFF" opacity="0">Getting ready…</text>
+        <g class="anim listening" opacity="0">
+          <text x="160" y="210" font-size="17" font-weight="600" fill="#FFFFFF">Listening…</text>
+          <text x="160" y="230" font-size="13" fill="#B4B4B4">Speak now</text>
+        </g>
+        <text class="anim gotit" x="160" y="210" font-size="17" font-weight="600" fill="#FFFFFF" opacity="0">Got it</text>
+      </g>
+
+      <circle class="anim pulse scale" cx="160" cy="318" r="38" fill="#E5483D" fill-opacity=".28"/>
+      <circle cx="160" cy="318" r="32" fill="#5A5A5A"/>
+      <circle class="anim micred" cx="160" cy="318" r="32" fill="#E5483D"/>
+      <use href="#mic" x="146" y="304" width="28" height="28" color="#FFFFFF"/>
+
+      <g text-anchor="middle" font-size="15" font-weight="500" fill="#FFFFFF">
+        <text class="anim w1" x="160" y="405" opacity="0">spicy</text>
+        <text class="anim w2" x="160" y="405" opacity="0">spicy ramen</text>
+        <text class="anim w3" x="160" y="405" opacity="0">spicy ramen near</text>
+        <text class="anim w4" x="160" y="405" opacity="0">spicy ramen near me</text>
+      </g>
+      <text x="160" y="448" text-anchor="middle" font-size="12" font-weight="600" letter-spacing=".6" fill="#B4B4B4">CANCEL</text>
+    </g>
+  </g>
+</g>
+
+<!-- Notch -->
+<rect x="118" y="28" width="84" height="22" rx="11" fill="#0B0C10"/>
+
+<!-- Status + silence timer, as in the docs demo -->
+<g class="meter">
+  <text x="10" y="654">status:</text>
+  <text x="68" y="654" class="v anim s-idle">idle</text>
+  <text x="68" y="654" class="v anim s-starting" opacity="0">starting</text>
+  <text x="68" y="654" class="v anim s-listening" opacity="0">listening</text>
+  <text x="68" y="654" class="v anim s-processing" opacity="0">processing</text>
+  <text x="310" y="654" text-anchor="end">silence timer 2.0 s</text>
+  <rect x="10" y="664" width="300" height="6" rx="3" fill="#8B929E" fill-opacity=".25"/>
+  <rect class="anim silence" x="10" y="664" width="300" height="6" rx="3" fill="#D8402F"/>
+</g>
+</svg>
